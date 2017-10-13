@@ -1,0 +1,14 @@
+﻿Hoy revisando los archivos de la tarea de prolog junto con unos compañeros me di cuenta de varias cosas:
+
+1. La tarea no funciona en SWI-Prolog, solo en gnu prolog (gprolog). Podría tatar de sacar una versión paraSWI-Prolog pero estoy sin compu. El problema es que prolog estandar asume que las hileras como "hola" se implementan utilizando listas, tal que si hago [X|Y] = "hola" deberia dar X='a', Y = "ola", esto es "hola" = ['h', 'o', 'l', 'a'], pero en SWI-Prolog no sucede así, éste por motivos de eficiencia (supongo yo) implementa las hileras como strings. Lamentablemente esto significa que TODO el código del tokenizer no va a funcionar. Mientras este sin compu no voy a poder sacar una versión para SWI-Prolog, si alguien quiere hacer esa tarea esta bienvenido.
+
+2. Para correr la tarea deben pasarse al directorio en que se encuentran los archivos. la forma de correrlo es (desde ese directorio):
+&gt; gprolog
+?- consult('shell.pl').
+compiling ...
+?- load.
+&gt; load prog.simple
+&gt; fact(5)
+num(120)
+&gt; bye
+?- _
