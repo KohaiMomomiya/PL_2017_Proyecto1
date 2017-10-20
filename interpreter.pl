@@ -42,6 +42,8 @@ eval(val(Ident,ParamList), Env, Result) :-
   find(def(Ident, lambda(IdentList, Expresion)), Env),
   bind(IdentList, ParamList, Env, NewEnv),
   eval(Expresion, NewEnv, Result).
+
+
 eval(sum(Expr1,Expr2), Env, num(Result)) :-
   !,
   eval(Expr1, Env, num(N1)),
@@ -78,6 +80,24 @@ eval(cond(Expr1, '=', Expr2), Env, Result) :-
   eval(Expr2, Env, N2),
   equal(N2,N1,Result).
 
+%FIXME: Evaluate logic booleans.
+eval(cond(Expr1, 'and', Expr2), Env, Result) :-
+  !,
+  eval(Expr1, Env, N1),
+  eval(Expr2, Env, N2),
+  Result is (N1 , N2).
+
+eval(cond(Expr1, 'or', Expr2, Env, Result) :-
+  !,
+  eval(Expr1, Env, N1),
+  eval(Expr2, Env, N2),
+  Result is (N1 ; N2).
+
+eval(not(Expr1), Env, Result) :-
+  !,
+  eval(Expr1, Env, Bool),
+  Result \= Bool.
+
 eval(if(Condicion, Then, Else), Env, Result) :-
   !,
   eval(Condicion, Env, Bool),
@@ -94,12 +114,22 @@ eval(X,_,_) :-
   !,
   write(X), write(' command not defined').
 
+eval(X, _, true) :-
+  isBoolean(X),
+  X = 'true'.
+
+eval(X, _, false) :-
+  isBoolean(X),
+  X = 'false'.
+
 branch(true, Then, _, Env, Result) :-
   !,
   eval(Then, Env, Result).
 branch(false, _, Else, Env, Result) :-
   !,
   eval(Else, Env, Result).
+
+% -- -- %
 
 less(N1, N2, true) :-
   N1 < N2, !.
