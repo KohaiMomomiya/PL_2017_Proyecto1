@@ -80,7 +80,7 @@ eval(cond(Expr1, '=', Expr2), Env, Result) :-
   eval(Expr2, Env, N2),
   equal(N2,N1,Result).
 
-%FIXME: Evaluate logic booleans.
+%TODO: Perform logical operations in booleans.
 eval(cond(Expr1, 'and', Expr2), Env, Result) :-
   !,
   eval(Expr1, Env, N1),
@@ -114,6 +114,7 @@ eval(X,_,_) :-
   !,
   write(X), write(' command not defined').
 
+%TODO: Evaluate boolean identifiers to prolog booleans.
 eval(X, _, true) :-
   isBoolean(X),
   X = 'true'.
