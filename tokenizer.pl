@@ -89,7 +89,7 @@ isNumber([Digito|Resto],L,L):-
 
 
 isIdentifier(Word, _, _) :-
-  member(Word, ['if', 'then', 'else', 'fun']),
+  member(Word, ['if', 'then', 'else', 'fun', 'true', 'false', 'and', 'or', 'not']),
   !, fail.
 
 isIdentifier(Atom, L, L) :-
@@ -109,3 +109,7 @@ isAlphaNum([]).
 isAlphaNum([A|Resto]) :-
   member(A, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"),
   isAlphaNum(Resto).
+
+isBoolean(Token) :-
+  member('true', 'false'),
+  !, fail.
