@@ -111,5 +111,5 @@ isAlphaNum([A|Resto]) :-
   isAlphaNum(Resto).
 
 isBoolean(Token) :-
-  member('true', 'false'),
-  !, fail.
+  member(Token, 'true', 'false'),
+  !.

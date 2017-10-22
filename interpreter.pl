@@ -14,7 +14,7 @@ find(X, [X|_]) :- !.
 find(X, [_|Y]) :- 
   find(X,Y).
 find(X, []) :-
-  write(X), write(' not defined'), nl, !, fail.
+  write(X), write(' not defined'), nl, !.
 
 bind(nada, nada, Env, Env) :- !.
 bind(identlist(Id,RestId), params(Expr,RestExpr), Env, [def(Id,Binding)|Result]) :-
@@ -42,7 +42,6 @@ eval(val(Ident,ParamList), Env, Result) :-
   find(def(Ident, lambda(IdentList, Expresion)), Env),
   bind(IdentList, ParamList, Env, NewEnv),
   eval(Expresion, NewEnv, Result).
-
 
 eval(sum(Expr1,Expr2), Env, num(Result)) :-
   !,
@@ -85,14 +84,13 @@ eval(cond(Expr1, 'and', Expr2), Env, Result) :-
   !,
   eval(Expr1, Env, N1),
   eval(Expr2, Env, N2),
-  Result is (N1 , N2).
+  Result = N1,N2.
 
-eval(cond(Expr1, 'or', Expr2, Env, Result) :-
+eval(cond(Expr1, 'or', Expr2), Env, Result) :-
   !,
   eval(Expr1, Env, N1),
   eval(Expr2, Env, N2),
-  Result is (N1 ; N2).
-
+  Result = N1;N2.
 eval(not(Expr1), Env, Result) :-
   !,
   eval(Expr1, Env, Bool),
@@ -111,8 +109,7 @@ eval(let(Defs,Exp), Env, Result) :-
 eval(K,_,K) :-
   isConstant(K), !.
 eval(X,_,_) :-
-  !,
-  write(X), write(' command not defined').
+  write(X), write(' command not defined'), !.
 
 %TODO: Evaluate boolean identifiers to prolog booleans.
 eval(X, _, true) :-
