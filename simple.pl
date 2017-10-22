@@ -1,4 +1,4 @@
-
+% prolog comment
 
 parse(simple(Definicion, SimpleRest)) -->
   definicion(Definicion), !,
